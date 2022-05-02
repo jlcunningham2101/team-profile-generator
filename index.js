@@ -1,13 +1,92 @@
-//dependencies //
-const inquirer = require('inquirer');
-const fs = require('fs');
+const inquirer = require("inquirer");
+const fs = require("fs");
+const path = require("path");
 
-const Employee = require('./lib/employee.js')
-const Engineer = require('./lib/Engineer.js');
-const Intern = require('./lib/Intern.js');
-const Manager = require('./lib/Manager.js');
+const Employee = require("./lib/Employee.js");
+const Engineer = require("./lib/Engineer.js");
+const Intern = require("./lib/Intern.js");
+const Manager = require("./lib/Manager.js");
 
-//Create an array of questions for team manager user input
+const dist_DIR = path.resolve(__dirname, "dist");
+const distPath = path.join(dist_DIR, "profileGenerator.html");
+
+const teammates = [];
+
+const promptsUser = (type) => {
+  return inquirer.prompt(questions[type]);
+};
+
+const writeDist = (page) => {
+  if (!fs.existsSync(dist_DIR)) {
+    fs.mkdirSync(dist_DIR);
+  }
+  fs.writeFileSync(distPath, page);
+  console.log("Here's your team profile!");
+};
+
+const questions = () => {
+  return promptsUser("newEmp").then((answer) => {
+    if (answer.role === "Engineer") {
+      promptsUser("engineer")
+        .then((emp) => {
+          const newEmployee = new Engineer(
+            emp.name,
+            emp.id,
+            emp.email,
+            emp.github
+          );
+          teammates.push(newEmployee);
+          containers.ids.push(emp.id);
+          questions();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else if (answer.role === "Intern") {
+      promptsUser("intern")
+        .then((emp) => {
+          const newEmployee = new Intern(
+            emp.name,
+            emp.id,
+            emp.email,
+            emp.school
+          );
+          teammates.push(newEmployee);
+          containers.ids.push(emp.id);
+          questions();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      console.log("Thanks for adding a new teammate!");
+      const Page = render(teammates);
+      writeDist(Page);
+    }
+  });
+};
+
+const buildTeam = () => {
+  return promptsUser("manager")
+    .then((emp) => {
+      const newEmployee = new Manager(
+        emp.name,
+        emp.id,
+        emp.email,
+        emp.officeNumber
+      );
+      teammates.push(newEmployee);
+      containers.ids.push(emp.id);
+      questions();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+buildTeam();
+
+/*Create an array of questions for team manager user input
 function getManager() {
 inquirer.prompt ([
 {
@@ -107,3 +186,4 @@ function addEngineer() {
     ])
 }
 //Add an Intern
+*/
