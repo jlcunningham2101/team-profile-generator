@@ -7,7 +7,6 @@
 - [User-Story](#user-story)
 - [Acceptance-Criteria](#acceptance-criteria)
 - [Usage](#usage)
-- [Webpage-Screenshots](#webpage-screenshots)
 - [Github-Link](#github-link)
 - [Deployed-Link](#deployed-link)
 - [Contributor](#contributor)
@@ -59,10 +58,9 @@ To use this application, you must install the following npm packages:
 
 The applcation must be invoked using the following command in the command line: node index.js
 
-### Webpage Screenshots
-
 ### GitHub Links
 
+https://jlcunningham2101.github.io/team-profile-generator/
 https://github.com/jlcunningham2101/team-profile-generator.git
 https://github.com/jlcunningham2101/team-profile-generator
 
